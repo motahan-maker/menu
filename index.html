@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>البرنس | EL PRINCE — منيو رقمي</title>
+<meta name="description" content="البرنس — منيو رقمي premium. اختار القسم، ضيف وجبتك، وابعث الطلب عبر واتساب." />
+<meta name="theme-color" content="#F6F1E8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111111'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='white' font-family='serif'%3E%D8%A8%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+<!-- ===== Splash: brand intro (hides after ~2s via app.js) ===== -->
+<div class="splash" id="splash" role="status" aria-label="البرنس — جار تحميل المنيو">
+  <div class="splash-brand">
+    <svg width="44" height="32" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M2 18 L0 6 L8 10 L12 1 L16 9 L20 1 L24 10 L32 6 L30 18 Z M2 20 h28 v2 H2 Z"/></svg>
+    <strong>البرنس</strong>
+    <small>EL PRINCE</small>
+  </div>
+  <span class="splash-bar" aria-hidden="true"><span></span></span>
+</div>
+
+<!-- ===== Sticky glass header ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="القائمة" title="القائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+
+    <a class="brand" href="#top" aria-label="البرنس — الرئيسية">
+      <span class="brand-crown" aria-hidden="true">
+        <svg width="30" height="22" viewBox="0 0 32 24" fill="currentColor"><path d="M2 18 L0 6 L8 10 L12 1 L16 9 L20 1 L24 10 L32 6 L30 18 Z M2 20 h28 v2 H2 Z"/></svg>
+      </span>
+      <span class="brand-text">
+        <strong class="brand-ar">البرنس</strong>
+        <small class="brand-en">EL PRINCE</small>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="بحث" aria-expanded="false" title="بحث">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      </button>
+      <button class="icon-btn cart-icon-btn" id="headerCartBtn" aria-label="فتح السلة" title="السلة">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .6h8.9a1 1 0 0 0 1-.8L21 7H6"/></svg>
+        <span class="cart-count-badge" id="headerCartCount" hidden>0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- expandable search -->
+  <div class="search-drawer" id="searchDrawer" hidden>
+    <div class="search-bar">
+      <svg class="search-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input id="searchInput" type="search" placeholder="ابحث عن وجبتك..." autocomplete="off" aria-label="ابحث عن وجبتك" />
+      <button id="searchClear" class="clear-btn" hidden>مسح</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero brand ===== -->
+  <section class="hero" aria-label="مقدمة المطعم">
+    <p class="hero-kicker">منيو رقمي • اطلب عبر واتساب</p>
+    <h1 class="hero-title">البرنس</h1>
+    <p class="hero-en">EL PRINCE</p>
+    <div class="hero-rule" aria-hidden="true"><span></span></div>
+    <p class="hero-sub">اختار القسم من الصور، شوف الأصناف والأسعار، وضيف للسلة بضغطة واحدة.</p>
+    <div class="hero-meta">
+      <span class="meta-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        شبين الكوم — شارع المصنع
+      </span>
+      <span class="meta-pill meta-pill-dark">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.3.6-.6.8-.4 1.1.6 1.1 1.4 1.8 2.5 2.4.3.1.5 0 .7-.2l.8-.9c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .1 0 .5-.2 1.1z"/></svg>
+        اطلب عبر واتساب
+      </span>
+    </div>
+  </section>
+
+  <!-- ===== Radial categories ===== -->
+  <section class="cat-section" aria-label="أقسام المنيو">
+    <div class="section-head" data-reveal>
+      <h2>اختار القسم</h2>
+      <p>دوس على صورة القسم عشان تشوف الأصناف تحت</p>
+    </div>
+
+    <div class="radial-stage" id="radialStage" role="group" aria-label="أقسام المنيو — تنقل دائري">
+      <!-- center brand -->
+      <div class="radial-center" aria-hidden="true">
+        <div class="radial-center-ring"></div>
+        <div class="radial-center-core">
+          <svg width="34" height="24" viewBox="0 0 32 24" fill="currentColor"><path d="M2 18 L0 6 L8 10 L12 1 L16 9 L20 1 L24 10 L32 6 L30 18 Z M2 20 h28 v2 H2 Z"/></svg>
+          <strong>البرنس</strong>
+          <small>EL PRINCE</small>
+        </div>
+      </div>
+      <!-- category nodes injected by JS -->
+      <div id="radialNodes"></div>
+    </div>
+
+    <p class="radial-hint" id="radialHint">القسم المختار: <strong id="radialHintName">السندوتشات</strong></p>
+
+    <!-- compact pill nav (functional mirror of radial) -->
+    <nav class="pill-nav" id="pillNav" aria-label="التنقل بين الأقسام"></nav>
+  </section>
+
+  <!-- ===== Search results (text-only) ===== -->
+  <section class="items-section" id="searchSection" hidden aria-label="نتائج البحث">
+    <div class="cat-head" data-reveal>
+      <div>
+        <h2 id="searchTitle">نتائج البحث</h2>
+        <p class="cat-count" id="searchCount"></p>
+      </div>
+    </div>
+    <div class="items-grid" id="searchResults"></div>
+    <div class="empty-state" id="searchEmpty" hidden>
+      <div class="empty-circle">؟</div>
+      <h3>لا توجد نتائج</h3>
+      <p>جرّب كلمة تانية زي «كبدة» أو «برجر» أو «كريب»</p>
+    </div>
+  </section>
+
+  <!-- ===== Active category items ===== -->
+  <section class="items-section" id="itemsSection" aria-label="أصناف القسم" aria-live="polite">
+    <div class="cat-head" data-reveal>
+      <div>
+        <p class="cat-kicker">القسم</p>
+        <h2 id="activeCatName">السندوتشات</h2>
+        <p class="cat-count" id="activeCatCount"></p>
+      </div>
+      <span class="cat-badge" id="activeCatBadge">7 أصناف</span>
+    </div>
+
+    <div class="skeleton-list" id="skeletonList" aria-hidden="true">
+      <div class="sk-card"><div class="sk-line w60"></div><div class="sk-line w40"></div><div class="sk-row"><div class="sk-pill"></div><div class="sk-pill"></div></div></div>
+      <div class="sk-card"><div class="sk-line w50"></div><div class="sk-line w70"></div><div class="sk-row"><div class="sk-pill"></div><div class="sk-pill"></div></div></div>
+      <div class="sk-card"><div class="sk-line w55"></div><div class="sk-line w35"></div><div class="sk-row"><div class="sk-pill"></div><div class="sk-pill"></div></div></div>
+    </div>
+
+    <div class="items-grid" id="itemsGrid"></div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section class="contact-section" aria-label="تواصل معنا">
+    <div class="contact-title-row" data-reveal><span class="line"></span><h2>تواصل معنا</h2><span class="line"></span></div>
+    <div class="contact-card" data-reveal>
+      <a class="contact-row" href="tel:+201131071414">
+        <span class="contact-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.2 1z"/></svg>
+        </span>
+        <span class="contact-txt"><small>خدمة التوصيل</small><strong dir="ltr">01131071414 - 01131071166</strong></span>
+      </a>
+      <div class="contact-divider"></div>
+      <div class="contact-row">
+        <span class="contact-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a8 8 0 0 0-8 8c0 5.2 8 12 8 12s8-6.8 8-12a8 8 0 0 0-8-8zm0 10.5A2.5 2.5 0 1 1 12 7.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        </span>
+        <span class="contact-txt"><small>العنوان</small><strong>شبين الكوم شارع المصنع داخل كافي شوب بوخارست</strong></span>
+      </div>
+      <div class="contact-actions">
+        <a class="btn btn-dark" href="tel:+201131071414">اتصال</a>
+        <a class="btn btn-dark" id="contactWhats" href="https://wa.me/201131071414?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1" target="_blank" rel="noopener">واتساب</a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D8%A8%D9%8A%D9%86+%D8%A7%D9%84%D9%83%D9%88%D9%85+%D8%B4%D8%A7%D8%B1%D8%B9+%D8%A7%D9%84%D9%85%D8%B5%D9%86%D8%B9+%D8%A8%D9%88%D8%AE%D8%A7%D8%B1%D8%B3%D8%AA" target="_blank" rel="noopener">الموقع</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" data-reveal>
+  <div class="foot-brand">
+    <svg width="26" height="20" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M2 18 L0 6 L8 10 L12 1 L16 9 L20 1 L24 10 L32 6 L30 18 Z M2 20 h28 v2 H2 Z"/></svg>
+    <strong>البرنس</strong>
+    <small>EL PRINCE</small>
+  </div>
+  <p class="foot-contact" dir="ltr">01131071414 • 01131071166</p>
+  <p class="foot-addr">شبين الكوم — شارع المصنع — داخل كافي شوب بوخارست</p>
+</footer>
+
+<!-- ===== Floating cart ===== -->
+<button class="floating-cart" id="floatingCart" hidden aria-label="فتح السلة">
+  <span class="fc-icon">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .6h8.9a1 1 0 0 0 1-.8L21 7H6"/></svg>
+    <span class="fc-badge" id="fcCount">0</span>
+  </span>
+  <span class="fc-txt"><small id="fcLabel">السلة • 0 عناصر</small><strong id="fcTotal">0 ج.م</strong></span>
+  <span class="fc-go">عرض السلة</span>
+</button>
+
+<!-- ===== Cart panel ===== -->
+<div class="overlay" id="cartOverlay" hidden></div>
+<aside class="cart-panel" id="cartPanel" role="dialog" aria-modal="true" aria-label="سلة الطلب" aria-hidden="true">
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="cart-head">
+    <div><h2>السلة</h2><p id="cartSub">0 عناصر</p></div>
+    <button class="icon-btn" id="cartClose" aria-label="إغلاق السلة">✕</button>
+  </div>
+
+  <div class="cart-customer">
+    <label>الاسم (اختياري)<input id="custName" type="text" placeholder="مثال: أحمد" autocomplete="name" /></label>
+    <label>العنوان (اختياري)<input id="custAddr" type="text" placeholder="مثال: شارع المصنع..." autocomplete="street-address" /></label>
+  </div>
+
+  <div class="cart-items" id="cartItems"></div>
+
+  <div class="empty-state cart-empty" id="cartEmpty">
+    <div class="empty-circle">◌</div>
+    <h3>السلة فارغة</h3>
+    <p>ابدأ باختيار وجبتك</p>
+    <button class="btn btn-dark" id="browseMenuBtn">تصفح المنيو</button>
+  </div>
+
+  <div class="cart-foot" id="cartFoot" hidden>
+    <div class="total-row"><span>الإجمالي</span><strong id="cartTotal">0 ج.م</strong></div>
+    <p class="cart-count-line" id="cartCountLine">عدد العناصر: 0</p>
+    <button class="btn btn-wa" id="whatsBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.3.6-.6.8-.4 1.1.6 1.1 1.4 1.8 2.5 2.4.3.1.5 0 .7-.2l.8-.9c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .1 0 .5-.2 1.1z"/></svg>
+      إرسال الطلب عبر واتساب
+    </button>
+    <button class="link-btn" id="clearCartBtn">إفراغ السلة</button>
+  </div>
+</aside>
+
+<!-- ===== Item bottom sheet ===== -->
+<div class="overlay" id="sheetOverlay" hidden></div>
+<div class="bottom-sheet" id="itemSheet" role="dialog" aria-modal="true" aria-label="تفاصيل الصنف" aria-hidden="true">
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-body">
+    <h3 id="sheetName">—</h3>
+    <p class="sheet-cat" id="sheetCat">—</p>
+    <p class="sheet-label">اختار الحجم</p>
+    <div class="variant-list" id="sheetVariants" role="radiogroup" aria-label="الأحجام المتاحة"></div>
+    <div class="sheet-row">
+      <div class="qty" role="group" aria-label="الكمية">
+        <button id="qtyMinus" aria-label="إنقاص الكمية">−</button>
+        <span id="qtyVal" aria-live="polite">1</span>
+        <button id="qtyPlus" aria-label="زيادة الكمية">+</button>
+      </div>
+      <div class="sheet-total"><small>الإجمالي</small><strong id="sheetTotal">0 ج.م</strong></div>
+    </div>
+    <button class="btn btn-dark btn-block" id="sheetAdd">أضف إلى السلة</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
