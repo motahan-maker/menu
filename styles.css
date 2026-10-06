@@ -5,14 +5,19 @@
   --shadow-sm:0 1px 2px rgba(17,17,17,.05),0 4px 16px rgba(17,17,17,.06);
   --shadow-md:0 8px 32px rgba(17,17,17,.14);
   --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --sticky-cart-h:96px; /* fixed cart bar height + clearance, reserved in main padding (Parts 4/8) */
   --font:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
+html,body{max-width:100%}
 body{
   font-family:var(--font); background:var(--cream); color:var(--black);
   min-height:100vh; -webkit-font-smoothing:antialiased; line-height:1.7;
+  /* Secondary safety net only (Part 5): every overflow source is fixed at its
+     root cause below. `clip` (not `hidden`) preserves position:sticky. */
+  overflow-x:clip;
 }
 img{display:block;max-width:100%}
 button{font-family:inherit;cursor:pointer}
@@ -58,6 +63,11 @@ a{color:inherit}
   flex:1;border:0;outline:0;background:transparent;font-size:15px;font-weight:600;color:var(--black);
   min-height:44px;
 }
+/* min-width:0 lets flex/grid children shrink instead of pushing content out (Parts 1/2/7) */
+.search-bar input{min-width:0}
+.item-name{min-width:0}
+.contact-txt{min-width:0}
+.cart-head>div,.cart-customer,.cart-items,.cart-foot,.sheet-body{min-width:0}
 .search-ic{color:var(--gray);flex-shrink:0}
 .clear-btn{
   border:0;background:var(--cream-2);border-radius:999px;padding:10px 18px;font-weight:800;font-size:14px;color:var(--black);
@@ -65,7 +75,9 @@ a{color:inherit}
 }
 
 /* ---------- hero ---------- */
-main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
+/* Bottom space = sticky cart height + safe-area + rhythm (Parts 4/8).
+   Content always scrolls fully above the fixed cart bar. */
+main{max-width:1060px;margin:0 auto;padding:0 16px calc(var(--sticky-cart-h) + env(safe-area-inset-bottom, 0px) + 44px)}
 .hero{text-align:center;padding:34px 8px 8px}
 .hero-kicker{font-size:12.5px;font-weight:700;color:var(--gray);letter-spacing:.3px}
 .hero-title{font-size:clamp(52px,13vw,84px);font-weight:900;line-height:1.1;letter-spacing:-1px}
@@ -86,17 +98,21 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .section-head h2{font-size:24px;font-weight:900}
 .section-head p{color:var(--gray);font-size:14px;font-weight:600}
 
-/* ---------- radial orbit: full ellipse, 7 nodes evenly spaced, zero overlap ---------- */
-/* Full-bleed on purpose: the orbit needs every pixel on 360px screens */
+/* ---------- radial orbit: true circle bounded by container AND viewport height ---------- */
+/* Root causes fixed (Part 8): fixed 600px height ignored short screens; full-bleed
+   calc(100%+32px) risked subpixel horizontal overflow; ellipse !== circular;
+   %-based decorative rings never matched the JS orbit. Now: contained stage,
+   JS sets a circular radius from width+height, stage height derives from it,
+   and the dotted ring reads the same --orbitD so it stays aligned. */
 .radial-stage{
-  position:relative;width:calc(100% + 32px);max-width:672px;height:600px;margin:0 -16px;
+  position:relative;width:100%;max-width:640px;height:480px;margin-inline:auto;
 }
-.radial-stage::before,.radial-stage::after{ /* faint concentric orbit rings */
+.radial-stage::before,.radial-stage::after{ /* concentric circular orbit rings, aligned via --orbitD */
   content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
   border:1.5px dashed rgba(17,17,17,.12);border-radius:50%;pointer-events:none;
 }
-.radial-stage::before{width:76%;height:70%}
-.radial-stage::after{width:52%;height:48%;border-color:rgba(17,17,17,.08)}
+.radial-stage::before{width:var(--orbitD,300px);height:var(--orbitD,300px)}
+.radial-stage::after{width:calc(var(--orbitD,300px)*0.66);height:calc(var(--orbitD,300px)*0.66);border-color:rgba(17,17,17,.08)}
 .radial-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none}
 .radial-center-ring{
   width:136px;height:136px;border-radius:50%;background:rgba(255,255,255,.55);
@@ -127,6 +143,9 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
   padding:2px 4px;text-shadow:0 1px 0 rgba(255,255,255,.9),0 0 14px rgba(246,241,232,1);
 }
 .radial-node:hover .node-img{scale:1.08}
+/* Elevation for the active pill so it layers intentionally above neighbours
+   instead of reading as accidental overlap (Parts 6/8) */
+.radial-node.active{z-index:3}
 .radial-node.active .node-img{outline:2.5px solid var(--black);box-shadow:var(--shadow-md);scale:1.1}
 .radial-node.active .node-name{
   background:var(--black);color:#fff;border-radius:999px;padding:3px 12px;text-shadow:none;
@@ -163,7 +182,6 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .items-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:760px){
   .items-grid{grid-template-columns:1fr 1fr}
-  .radial-stage{height:640px}
   .radial-center-ring{width:190px;height:190px}
   .radial-center-core{width:160px;height:160px}
   .radial-center-core strong{font-size:30px}
@@ -236,7 +254,11 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .contact-txt{display:flex;flex-direction:column;gap:2px}
 .contact-txt small{color:var(--gray);font-size:13px;font-weight:700}
 .contact-txt strong{font-size:15.5px;font-weight:800}
-.contact-actions{display:flex;gap:8px;margin-top:8px}
+.contact-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+/* Root cause (Part 3): fixed 24px side padding on three flex:1 buttons needs
+   ~300px; at 320px only ~284px exist so الموقع escaped the card.
+   Wrap + basis keeps one row on wide screens, stacks gracefully on narrow. */
+.contact-actions .btn{flex:1 1 104px;min-width:0;padding-inline:16px}
 .btn{border-radius:999px;font-weight:800;font-size:15px;min-height:48px;padding:0 24px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;text-decoration:none;transition:transform .12s ease,opacity .12s}
 .btn:active{transform:scale(.97)}
 .btn-dark{background:var(--black);color:#fff;flex:1}
@@ -254,11 +276,14 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .foot-addr{font-size:13px;font-weight:600}
 
 /* ---------- floating cart ---------- */
+/* Logical centering (no physical left/transform) so RTL never pushes it out (Parts 4/6) */
 .floating-cart{
-  position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  position:fixed;bottom:calc(16px + env(safe-area-inset-bottom, 0px));inset-inline:0;margin-inline:auto;
   width:min(480px,calc(100% - 24px));background:var(--black);color:#fff;border:0;border-radius:20px;
   box-shadow:var(--shadow-md);display:flex;align-items:center;gap:12px;padding:12px 12px 12px 20px;z-index:60;
 }
+.fc-txt{min-width:0}
+.fc-go{flex-shrink:0}
 .fc-icon{position:relative;display:grid;place-items:center}
 .fc-badge{position:absolute;top:-10px;inset-inline-start:-10px;background:#fff;color:var(--black);font-size:12px;font-weight:900;min-width:22px;height:22px;border-radius:999px;display:grid;place-items:center}
 .fc-txt{display:flex;flex-direction:column;line-height:1.3;text-align:start;flex:1}
@@ -268,13 +293,17 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 
 /* ---------- overlays / sheets ---------- */
 .overlay{position:fixed;inset:0;background:rgba(17,17,17,.45);z-index:70;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+/* Shared bottom-sheet primitive (Part 9): logical centering instead of
+   left:50%+translateX (which caused subpixel viewport overflow in RTL),
+   width:100% capped by design max AND viewport, safe-area aware. */
 .cart-panel,.bottom-sheet{
   position:fixed;z-index:71;background:var(--cream);border-radius:24px 24px 0 0;
-  bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);
-  max-height:90vh;max-height:90dvh;overflow-y:auto;padding:10px 18px calc(20px + env(safe-area-inset-bottom));
+  bottom:0;inset-inline:0;margin-inline:auto;width:100%;max-width:min(560px,100vw);
+  max-height:92vh;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;
+  padding:10px 18px calc(20px + env(safe-area-inset-bottom, 0px));
   box-shadow:var(--shadow-md);transition:transform .25s ease,opacity .25s ease;
 }
-.cart-panel[aria-hidden="true"],.bottom-sheet[aria-hidden="true"]{transform:translateX(-50%) translateY(100%);opacity:0;pointer-events:none}
+.cart-panel[aria-hidden="true"],.bottom-sheet[aria-hidden="true"]{transform:translateY(102%);opacity:0;pointer-events:none}
 .sheet-handle{width:44px;height:5px;border-radius:99px;background:rgba(17,17,17,.2);margin:4px auto 10px}
 .cart-head{display:flex;align-items:center;justify-content:space-between}
 .cart-head h2{font-size:22px;font-weight:900}
@@ -283,13 +312,13 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .cart-customer label{font-size:13px;font-weight:800;display:grid;gap:6px}
 .cart-customer input{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;background:#fff;min-height:48px;width:100%}
 .cart-items{display:grid;gap:8px;margin-bottom:10px}
-.cart-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.cart-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px}
 .cart-item-info{flex:1;min-width:0}
 .cart-item-info strong{display:block;font-size:15px;font-weight:800}
 .cart-item-info small{color:var(--gray);font-weight:700;font-size:13px}
 .cart-item-price{font-weight:900;font-size:15px;white-space:nowrap}
-.mini-qty{display:flex;align-items:center;gap:2px;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:2px}
-.mini-qty button{width:36px;height:36px;border-radius:50%;border:0;background:#fff;font-size:18px;font-weight:900;display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+.mini-qty{display:flex;align-items:center;gap:2px;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:2px;flex-shrink:0}
+.mini-qty button{width:40px;height:40px;border-radius:50%;border:0;background:#fff;font-size:18px;font-weight:900;display:grid;place-items:center;box-shadow:var(--shadow-sm);flex-shrink:0}
 .mini-qty span{min-width:26px;text-align:center;font-weight:900}
 .cart-foot{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow-sm);display:grid;gap:8px}
 .total-row{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:800}
@@ -311,7 +340,7 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .variant-opt.selected .radio{border-color:var(--black);background:radial-gradient(circle,var(--black) 45%,transparent 50%)}
 .variant-opt .vprice{font-weight:900}
 .sheet-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.qty{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.qty{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;flex-shrink:0}
 .qty button{width:44px;height:44px;border-radius:50%;border:0;background:var(--black);color:#fff;font-size:22px;font-weight:900;display:grid;place-items:center}
 .qty button:active{transform:scale(.93)}
 .qty span{min-width:36px;text-align:center;font-size:18px;font-weight:900}
@@ -320,7 +349,7 @@ main{max-width:1060px;margin:0 auto;padding:0 16px 140px}
 .sheet-total strong{font-size:22px;font-weight:900}
 
 /* toast */
-.toast-wrap{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(420px,calc(100% - 32px))}
+.toast-wrap{position:fixed;bottom:100px;inset-inline:0;margin-inline:auto;z-index:90;display:grid;gap:8px;width:min(420px,calc(100% - 32px))}
 .toast{background:var(--black);color:#fff;border-radius:14px;padding:12px 18px;font-size:14px;font-weight:800;box-shadow:var(--shadow-md);text-align:center;animation:tin .25s ease}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}}
 
@@ -377,5 +406,15 @@ body.ready #radialNodes:not(.entered) .node-img{
 /* scroll reveals — class added by JS only, so no-JS stays visible */
 .reveal{opacity:0;translate:0 18px;transition:opacity .6s ease,translate .6s ease}
 .reveal.in{opacity:1;translate:0 0}
+
+/* Tiny screens: slightly smaller orbit nodes + center keep 7 full labels clear (Part 8/11) */
+@media(max-width:359px){
+  .radial-node{width:84px}
+  .radial-node .node-img{width:60px;height:60px}
+  .radial-node .node-name{font-size:11px}
+  .radial-center-ring{width:112px;height:112px}
+  .radial-center-core{width:92px;height:92px}
+  .radial-center-core strong{font-size:18px}
+}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

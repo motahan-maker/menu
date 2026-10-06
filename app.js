@@ -149,23 +149,33 @@ const cartEntries = () => Object.values(cart);
 const cartCount = () => cartEntries().reduce((s, e) => s + e.qty, 0);
 const cartTotal = () => cartEntries().reduce((s, e) => s + e.qty * e.unitPrice, 0);
 
-/* ============ radial layout ============ */
-/* Full elliptical orbit: 7 nodes evenly spaced (360/7) so nothing overlaps.
-   Start angle 38.5° + full-bleed stage tuned numerically: worst pair = 112.8px
-   on 360px vs ~96px worst label run (plain-text chips, no bg) => clear. */
-const ORBIT_RHO = 38.5;
+/* ============ radial layout: true circle bounded by width AND height ============ */
+/* Root causes fixed (Part 8): fixed 600px height ignored short viewports, the
+   shape was an ellipse (not circular), and %-based decorative rings never
+   matched the JS orbit. Now R derives from container width + viewport height,
+   stage height derives from R, and the dotted ring reads the same --orbitD.
+   Label clearance verified against real Cairo Bold advances (worst label
+   السندوتشات = 91.8px @12.5px; tightest pair needs (92+64)/2+8 = 86px). */
+const ORBIT_RHO = 38.5; // rotated so a single node (not a pair) sits at the bottom
 function positionRadial() {
   const stage = $('#radialStage');
   const nodes = [...document.querySelectorAll('.radial-node')];
   if (!stage || !nodes.length) return;
-  const W = stage.clientWidth, H = stage.clientHeight;
-  const cx = W / 2, cy = H * 0.5;
-  const rx = Math.min(W / 2 - 56, 230);
-  const ry = Math.min(H * 0.36, 215);
+  const W = stage.clientWidth;
+  const vh = window.innerHeight || 700;
+  const desktop = window.matchMedia && window.matchMedia('(min-width:760px)').matches;
+  const edgePad = desktop ? 60 : 54; // half worst-label + margin
+  const nodePad = desktop ? 80 : 58; // half node height incl. label
+  const heightBudget = Math.max(120, (vh - 320) / 2);
+  const R = Math.min(W / 2 - edgePad, 215, heightBudget);
+  const H = Math.ceil(2 * (R + nodePad));
+  const cx = W / 2, cy = H / 2;
+  stage.style.height = `${H}px`;
+  stage.style.setProperty('--orbitD', `${Math.round(R * 2)}px`);
   nodes.forEach((n, i) => {
     const phi = ((ORBIT_RHO - 90 + (i * 360) / nodes.length) * Math.PI) / 180;
-    n.style.left = `${cx + rx * Math.cos(phi)}px`;
-    n.style.top = `${cy + ry * Math.sin(phi)}px`;
+    n.style.left = `${cx + R * Math.cos(phi)}px`;
+    n.style.top = `${cy + R * Math.sin(phi)}px`;
   });
 }
 
